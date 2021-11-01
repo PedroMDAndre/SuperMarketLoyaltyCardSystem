@@ -1,7 +1,7 @@
 package com.rs2.lcs.controllers;
 
+import com.rs2.lcs.dto.UserDto;
 import com.rs2.lcs.exceptions.InvalidUserException;
-import com.rs2.lcs.model.User;
 import com.rs2.lcs.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +16,12 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = {"/user/add"})
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity addUser(@RequestBody UserDto userDto) {
         try {
-            userService.save(user);
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
+            userService.save(userDto);
+            return new ResponseEntity<>(userDto, HttpStatus.CREATED);
         } catch (InvalidUserException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
     }
