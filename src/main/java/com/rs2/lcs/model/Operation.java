@@ -78,4 +78,12 @@ public class Operation {
     public void setCashDiscount(double cashDiscount) {
         this.cashDiscount = cashDiscount;
     }
+
+    public boolean isDeliveredWaterPacket() {
+        return deliveredWaterPacket;
+    }
+
+    public void setDeliveredWaterPacket(boolean deliveredWaterPacket) {
+        this.deliveredWaterPacket = deliveredWaterPacket;
+    }
 }

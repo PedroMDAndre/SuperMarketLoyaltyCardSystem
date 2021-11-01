@@ -7,12 +7,10 @@ import com.rs2.lcs.model.OperationEnum;
 import com.rs2.lcs.repositories.OperationRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 public class OperationServiceImpl implements OperationService {
     private static final int DISCOUNT_CASH = 1; // EUR
-    private static final int DISCOUNT_PER_POINTS = 100; // Points
+    private static final int DISCOUNT_PER_POINTS = -100; // Points
     private static final int PURCHASE_PER_CASH = 50; // EUR
     private static final int PURCHASE_POINTS = 10; // Points
 
@@ -22,36 +20,42 @@ public class OperationServiceImpl implements OperationService {
         Long userId = operationDto.getUserId();
         Long cashierId = operationDto.getCashierId();
 
-        // Check if Operation is valid
-
         Operation operation = new Operation(userId, cashierId, operationType.getDescription());
 
         if (operationType.equals(OperationEnum.PURCHASE)) {
-
-            //private int pointBalance = 0;
-            //private double cashSpent = 0;
-            //private double cashDiscount = 0;
-            //private boolean deliveredWaterPacket = false;
+            double cashSpent = operationDto.getCashSpent();
+            int purchasePoints = purchasePoints(cashSpent);
 
             operation.setOperationType(OperationEnum.PURCHASE.getDescription());
-            operation.setPointBalance(purchasePoints(operation.getCashSpent()));
-
+            operation.setCashSpent(cashSpent);
+            operation.setPointBalance(purchasePoints);
         } else if (operationType.equals(OperationEnum.REDEEM)) {
-            operation.setOperationType(OperationEnum.REDEEM.getDescription());
+            if (!isPossibleToRedeemPoints(userId)) {
+                throw new InvalidOperationException("Not enough points.");
+            }
 
+            boolean deliveredWaterPacket = operationDto.isDeliveredWaterPacket();
+
+            operation.setOperationType(OperationEnum.REDEEM.getDescription());
+            operation.setPointBalance(DISCOUNT_PER_POINTS);
+            operation.setDeliveredWaterPacket(deliveredWaterPacket);
+            if(!deliveredWaterPacket){
+                operation.setCashDiscount(DISCOUNT_CASH);
+            }
         } else {
             throw new InvalidOperationException("Operation is not valid.");
         }
 
+        operationDto.setDateTime(operation.getDateTime());
         operationRepository.save(operation);
     }
 
-    private boolean isPossibleToRedeemPoints(int points) {
-        return false;
+    private boolean isPossibleToRedeemPoints(Long userId) {
+        return operationRepository.sumPointsById(userId) >= DISCOUNT_PER_POINTS;
     }
 
     private int purchasePoints(double value) {
-        return ((int)(value / PURCHASE_PER_CASH)) * PURCHASE_POINTS;
+        return ((int) (value / PURCHASE_PER_CASH)) * PURCHASE_POINTS;
     }
 
 }
