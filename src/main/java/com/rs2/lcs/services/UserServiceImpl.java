@@ -1,5 +1,6 @@
 package com.rs2.lcs.services;
 
+import com.rs2.lcs.dto.UserDto;
 import com.rs2.lcs.exceptions.InvalidUserException;
 import com.rs2.lcs.model.User;
 import com.rs2.lcs.repositories.UserRepository;
@@ -12,11 +13,42 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public void save(User user) throws InvalidUserException{
+    public void save(UserDto userDto) throws InvalidUserException {
+        Long mobileNumber = userDto.getMobileNumber();
+        Long idCardNumber = userDto.getIdCardNumber();
+
         // Check if user is valid
-        if (true) {
-            throw new InvalidUserException();
+        if (mobileNumber == null) {
+            throw new InvalidUserException("A mobile number was not provided.");
         }
+        if (idCardNumber == null) {
+            throw new InvalidUserException("A card number was not provided.");
+        }
+        if (!isUniqueMobileNumber(mobileNumber)) {
+            throw new InvalidUserException("This mobile number is being used by other user.");
+        }
+        if (!isUniqueIdCardNumber(idCardNumber)) {
+            throw new InvalidUserException("This card number is being used by other user.");
+        }
+
+        User user = new User(
+                userDto.getName(),
+                userDto.getSurname(),
+                mobileNumber,
+                idCardNumber
+        );
+
+        userDto.setId(user.getId());
         userRepository.save(user);
+    }
+
+    private boolean isUniqueMobileNumber(Long mobileNumber) {
+        long frequency = userRepository.countByMobileNumber(mobileNumber);
+        return frequency == 0;
+    }
+
+    private boolean isUniqueIdCardNumber(Long idCardNumber) {
+        long frequency = userRepository.countByIdCardNumber(idCardNumber);
+        return frequency == 0;
     }
 }
