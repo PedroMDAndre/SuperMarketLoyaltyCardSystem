@@ -33,8 +33,8 @@ public class OperationServiceImpl implements OperationService {
             //private double cashDiscount = 0;
             //private boolean deliveredWaterPacket = false;
 
-            //operation.setOperationType(OperationEnum.PURCHASE.getDescription());
-            //operation.setPointBalance(purchasePoints(operation.getCashSpent()));
+            operation.setOperationType(OperationEnum.PURCHASE.getDescription());
+            operation.setPointBalance(purchasePoints(operation.getCashSpent()));
 
         } else if (operationType.equals(OperationEnum.REDEEM)) {
             operation.setOperationType(OperationEnum.REDEEM.getDescription());
