@@ -1,27 +1,47 @@
 package com.rs2.lcs.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
     // Attributes
     @Id
-    Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    String name;
+    private String name;
 
-    String surname;
-
-    @Column(unique = true)
-    Long mobileNumber;
+    private String surname;
 
     @Column(unique = true)
-    Long idCardNumber;
+    private Long mobileNumber;
+
+    @Column(unique = true)
+    private Long idCardNumber;
 
     // Constructor
     public User() {
 
+    }
+
+    // Methods
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public Long getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public Long getIdCardNumber() {
+        return idCardNumber;
     }
 }
