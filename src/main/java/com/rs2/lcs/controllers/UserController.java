@@ -1,20 +1,28 @@
 package com.rs2.lcs.controllers;
 
+import com.rs2.lcs.exceptions.InvalidUserException;
 import com.rs2.lcs.model.User;
-import com.rs2.lcs.repositories.UserRepository;
+import com.rs2.lcs.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @PostMapping(value = {"/user/add"})
-    public String addUser(){
-        User user = new User();
-        userRepository.save(user);
-        return user.toString();
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        try {
+            userService.save(user);
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        } catch (InvalidUserException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
