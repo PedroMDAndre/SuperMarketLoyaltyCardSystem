@@ -17,10 +17,10 @@ public class Operation {
     private Long cashierId;
     private LocalDateTime dateTime;
     private String operationType;
-    private int pointBalance = 0;
-    private double cashSpent = 0;
-    private double cashDiscount = 0;
-    private boolean deliveredWaterPacket = false;
+    private Long pointBalance;
+    private Double cashSpent;
+    private Double cashDiscount;
+    private Boolean deliveredWaterPacket;
 
     // Constructor
     public Operation(Long userId, Long cashierId, String operationType) {
@@ -55,15 +55,15 @@ public class Operation {
         this.operationType = operationType;
     }
 
-    public int getPointBalance() {
+    public Long getPointBalance() {
         return pointBalance;
     }
 
-    public void setPointBalance(int pointBalance) {
+    public void setPointBalance(Long pointBalance) {
         this.pointBalance = pointBalance;
     }
 
-    public double getCashSpent() {
+    public Double getCashSpent() {
         return cashSpent;
     }
 
@@ -71,7 +71,7 @@ public class Operation {
         this.cashSpent = cashSpent;
     }
 
-    public double getCashDiscount() {
+    public Double getCashDiscount() {
         return cashDiscount;
     }
 

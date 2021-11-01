@@ -16,13 +16,12 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = {"/user/add"})
-    public ResponseEntity addUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> addUser(@RequestBody UserDto userDto) {
         try {
             userService.save(userDto);
             return new ResponseEntity<>(userDto, HttpStatus.CREATED);
         } catch (InvalidUserException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
     }
 }

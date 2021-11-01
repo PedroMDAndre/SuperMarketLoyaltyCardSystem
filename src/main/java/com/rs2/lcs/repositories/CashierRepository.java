@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CashierRepository extends JpaRepository<Cashier, Long> {
+    /**
+     * Get a list of all
+     * */
+    Cashier findAllById(Long id);
 }
