@@ -42,6 +42,21 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public User findByUserId(Long id) {
+        return userRepository.findById(id).get();
+    }
+
+    @Override
+    public User findByMobileNumber(Long mobileNumber) {
+        return userRepository.findByMobileNumber(mobileNumber);
+    }
+
+    @Override
+    public User findByIdCardNumber(Long idCardNumber) {
+        return userRepository.findByIdCardNumber(idCardNumber);
+    }
+
     private boolean isUniqueMobileNumber(Long mobileNumber) {
         long frequency = userRepository.countByMobileNumber(mobileNumber);
         return frequency == 0;

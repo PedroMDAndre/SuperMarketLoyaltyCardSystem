@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     long countByMobileNumber(Long mobileNumber);
     long countByIdCardNumber(Long idCardNumber);
+    User findByMobileNumber(Long mobileNumber);
+    User findByIdCardNumber(Long idCardNumber);
 }
