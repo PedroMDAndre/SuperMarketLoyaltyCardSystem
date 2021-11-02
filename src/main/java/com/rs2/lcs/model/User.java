@@ -1,6 +1,7 @@
 package com.rs2.lcs.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class User {
@@ -14,9 +15,11 @@ public class User {
     private String surname;
 
     @Column(unique = true)
+    @NotBlank
     private Long mobileNumber;
 
     @Column(unique = true)
+    @NotBlank
     private Long idCardNumber;
 
     // Constructor

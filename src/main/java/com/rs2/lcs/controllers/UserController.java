@@ -17,8 +17,8 @@ public class UserController {
     @PostMapping(value = {"/user/add"})
     public ResponseEntity<Object> addUser(@RequestBody UserDto userDto) {
         try {
-            userService.save(userDto);
-            return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+            User user = userService.save(userDto);
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (InvalidUserException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

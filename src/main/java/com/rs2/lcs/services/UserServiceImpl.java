@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public void save(UserDto userDto) throws InvalidUserException {
+    public User save(UserDto userDto) throws InvalidUserException {
         Long mobileNumber = userDto.getMobileNumber();
         Long idCardNumber = userDto.getIdCardNumber();
 
@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
                 idCardNumber
         );
 
-        userDto.setId(user.getId());
         userRepository.save(user);
+        return user;
     }
 
     @Override
