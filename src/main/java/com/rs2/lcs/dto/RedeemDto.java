@@ -12,6 +12,13 @@ public class RedeemDto {
 
     private boolean deliveredWaterPacket;
 
+    // Constructor
+    public RedeemDto(Long userId, Long cashierId, boolean deliveredWaterPacket) {
+        this.userId = userId;
+        this.cashierId = cashierId;
+        this.deliveredWaterPacket = deliveredWaterPacket;
+    }
+
     // Methods
     public Long getUserId() {
         return userId;

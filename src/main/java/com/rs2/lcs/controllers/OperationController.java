@@ -1,6 +1,6 @@
 package com.rs2.lcs.controllers;
 
-import com.rs2.lcs.dto.UserIdPointDto;
+import com.rs2.lcs.dto.UserIdPoint;
 import com.rs2.lcs.dto.PurchaseDto;
 import com.rs2.lcs.dto.RedeemDto;
 import com.rs2.lcs.exceptions.InvalidOperationException;
@@ -44,8 +44,7 @@ public class OperationController {
     @GetMapping(value = {"/operation/unclaimed-balance"})
     public ResponseEntity<Object> unclaimedOperationsBalance() {
         try {
-            List<UserIdPointDto> positiveBalancePoints = operationService.getPositiveBalancePoints();
-            //System.out.println(positiveBalancePoints.get(1).getUserId());
+            List<UserIdPoint> positiveBalancePoints = operationService.getPositiveBalancePoints();
             return new ResponseEntity<>(positiveBalancePoints, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

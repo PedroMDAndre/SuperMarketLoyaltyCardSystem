@@ -1,6 +1,6 @@
 package com.rs2.lcs.services;
 
-import com.rs2.lcs.dto.UserIdPointDto;
+import com.rs2.lcs.dto.UserIdPoint;
 import com.rs2.lcs.dto.PurchaseDto;
 import com.rs2.lcs.dto.RedeemDto;
 import com.rs2.lcs.exceptions.InvalidOperationException;
@@ -75,12 +75,12 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<UserIdPointDto> getPositiveBalancePoints() {
+    public List<UserIdPoint> getPositiveBalancePoints() {
         return operationRepository.positiveBalancePoints();
     }
 
     private boolean isPossibleToRedeemPoints(Long userId) {
-        return operationRepository.sumPointsById(userId) >= DISCOUNT_PER_POINTS;
+        return operationRepository.sumPointsById(userId) >= -DISCOUNT_PER_POINTS;
     }
 
     private int purchasePoints(double value) {

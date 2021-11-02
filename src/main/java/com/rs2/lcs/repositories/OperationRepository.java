@@ -1,6 +1,6 @@
 package com.rs2.lcs.repositories;
 
-import com.rs2.lcs.dto.UserIdPointDto;
+import com.rs2.lcs.dto.UserIdPoint;
 import com.rs2.lcs.model.Operation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,5 +12,5 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
     Long sumPointsById(Long userId);
 
     @Query(value = "SELECT user_id as userId, SUM(point_balance) as balance FROM operation GROUP BY user_id HAVING balance > 0", nativeQuery = true)
-    List<UserIdPointDto> positiveBalancePoints();
+    List<UserIdPoint> positiveBalancePoints();
 }
