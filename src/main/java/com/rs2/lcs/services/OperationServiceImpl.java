@@ -1,10 +1,12 @@
 package com.rs2.lcs.services;
 
-import com.rs2.lcs.dto.OperationDto;
+import com.rs2.lcs.dto.PurchaseDto;
+import com.rs2.lcs.dto.RedeemDto;
 import com.rs2.lcs.exceptions.InvalidOperationException;
 import com.rs2.lcs.model.Operation;
 import com.rs2.lcs.model.OperationEnum;
 import com.rs2.lcs.repositories.OperationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,40 +16,47 @@ public class OperationServiceImpl implements OperationService {
     private static final int PURCHASE_PER_CASH = 50; // EUR
     private static final int PURCHASE_POINTS = 10; // Points
 
+    @Autowired
     private OperationRepository operationRepository;
 
-    public void save(OperationDto operationDto, OperationEnum operationType) throws InvalidOperationException {
-        Long userId = operationDto.getUserId();
-        Long cashierId = operationDto.getCashierId();
+    @Override
+    public Operation savePurchase(PurchaseDto purchaseDto) throws InvalidOperationException {
+        Long userId = purchaseDto.getUserId();
+        Long cashierId = purchaseDto.getCashierId();
 
-        Operation operation = new Operation(userId, cashierId, operationType.getDescription());
+        Operation operation = new Operation(userId, cashierId, OperationEnum.PURCHASE.getDescription());
 
-        if (operationType.equals(OperationEnum.PURCHASE)) {
-            double cashSpent = operationDto.getCashSpent();
-            int purchasePoints = purchasePoints(cashSpent);
+        double cashSpent = purchaseDto.getCashSpent();
+        int purchasePoints = purchasePoints(cashSpent);
 
-            operation.setOperationType(OperationEnum.PURCHASE.getDescription());
-            operation.setCashSpent(cashSpent);
-            operation.setPointBalance(purchasePoints);
-        } else if (operationType.equals(OperationEnum.REDEEM)) {
-            if (!isPossibleToRedeemPoints(userId)) {
-                throw new InvalidOperationException("Not enough points.");
-            }
+        operation.setCashSpent(cashSpent);
+        operation.setPointBalance(purchasePoints);
 
-            boolean deliveredWaterPacket = operationDto.isDeliveredWaterPacket();
+        operationRepository.save(operation);
+        return operation;
+    }
 
-            operation.setOperationType(OperationEnum.REDEEM.getDescription());
-            operation.setPointBalance(DISCOUNT_PER_POINTS);
-            operation.setDeliveredWaterPacket(deliveredWaterPacket);
-            if(!deliveredWaterPacket){
-                operation.setCashDiscount(DISCOUNT_CASH);
-            }
-        } else {
-            throw new InvalidOperationException("Operation is not valid.");
+    @Override
+    public Operation saveRedeem(RedeemDto redeemDto) throws InvalidOperationException {
+        Long userId = redeemDto.getUserId();
+        Long cashierId = redeemDto.getCashierId();
+
+        if (!isPossibleToRedeemPoints(userId)) {
+            throw new InvalidOperationException("Not enough points.");
         }
 
-        operationDto.setDateTime(operation.getDateTime());
+        Operation operation = new Operation(userId, cashierId, OperationEnum.REDEEM.getDescription());
+
+        boolean deliveredWaterPacket = redeemDto.isDeliveredWaterPacket();
+
+        operation.setPointBalance(DISCOUNT_PER_POINTS);
+        operation.setDeliveredWaterPacket(deliveredWaterPacket);
+        if(!deliveredWaterPacket){
+            operation.setCashDiscount(DISCOUNT_CASH);
+        }
+
         operationRepository.save(operation);
+        return operation;
     }
 
     private boolean isPossibleToRedeemPoints(Long userId) {
