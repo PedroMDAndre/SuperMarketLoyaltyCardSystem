@@ -13,6 +13,14 @@ public class UserDto {
     @NotBlank
     private Long idCardNumber;
 
+    // Constructor
+    public UserDto(String name, String surname, Long mobileNumber, Long idCardNumber) {
+        this.name = name;
+        this.surname = surname;
+        this.mobileNumber = mobileNumber;
+        this.idCardNumber = idCardNumber;
+    }
+
     // Methods
     public String getName() {
         return name;
