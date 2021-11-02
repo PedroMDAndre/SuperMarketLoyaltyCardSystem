@@ -2,6 +2,7 @@ package com.rs2.lcs;
 
 import com.rs2.lcs.dto.UserDto;
 import com.rs2.lcs.exceptions.InvalidUserException;
+import com.rs2.lcs.exceptions.UserNotFoundException;
 import com.rs2.lcs.model.User;
 import com.rs2.lcs.repositories.UserRepository;
 import com.rs2.lcs.services.UserServiceImpl;
@@ -127,7 +128,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findByUserIdSuccessTest() {
+    void findByUserIdSuccessTest() throws UserNotFoundException {
         // Arrange
         Long userId = 1L;
         String name = "James";
@@ -146,7 +147,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findByMobileNumberSuccessTest() {
+    void findByMobileNumberSuccessTest() throws UserNotFoundException {
         // Arrange
         String name = "James";
         String surname = "Who";
@@ -164,7 +165,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findByIdCardNumberSuccessTest() {
+    void findByIdCardNumberSuccessTest() throws UserNotFoundException {
         // Arrange
         String name = "James";
         String surname = "Who";

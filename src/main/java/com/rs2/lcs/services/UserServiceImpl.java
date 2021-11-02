@@ -2,13 +2,18 @@ package com.rs2.lcs.services;
 
 import com.rs2.lcs.dto.UserDto;
 import com.rs2.lcs.exceptions.InvalidUserException;
+import com.rs2.lcs.exceptions.UserNotFoundException;
 import com.rs2.lcs.model.User;
 import com.rs2.lcs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
+    private static final String USER_NOT_FOUND = "User not found.";
+
     @Autowired
     UserRepository userRepository;
 
@@ -43,18 +48,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserId(Long id) {
-        return userRepository.findById(id).get();
+    public User findByUserId(Long id) throws UserNotFoundException {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        } else {
+            throw new UserNotFoundException(USER_NOT_FOUND);
+        }
     }
 
     @Override
-    public User findByMobileNumber(Long mobileNumber) {
-        return userRepository.findByMobileNumber(mobileNumber);
+    public User findByMobileNumber(Long mobileNumber) throws UserNotFoundException {
+        User user = userRepository.findByMobileNumber(mobileNumber);
+        if (user == null) {
+            throw new UserNotFoundException(USER_NOT_FOUND);
+        }
+        return user;
     }
 
     @Override
-    public User findByIdCardNumber(Long idCardNumber) {
-        return userRepository.findByIdCardNumber(idCardNumber);
+    public User findByIdCardNumber(Long idCardNumber) throws UserNotFoundException {
+        User user = userRepository.findByIdCardNumber(idCardNumber);
+        if (user == null) {
+            throw new UserNotFoundException(USER_NOT_FOUND);
+        }
+        return user;
     }
 
     private boolean isUniqueMobileNumber(Long mobileNumber) {

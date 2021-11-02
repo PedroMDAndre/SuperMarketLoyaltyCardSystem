@@ -12,9 +12,6 @@ public class Cashier {
     String name;
 
     // Constructor
-    public Cashier() {
-
-    }
 
     // Methods
     public Long getId() {
