@@ -1,11 +1,15 @@
 package com.rs2.lcs.services;
 
+import com.rs2.lcs.dto.UserIdPointDto;
 import com.rs2.lcs.dto.PurchaseDto;
 import com.rs2.lcs.dto.RedeemDto;
 import com.rs2.lcs.exceptions.InvalidOperationException;
 import com.rs2.lcs.model.Operation;
 
+import java.util.List;
+
 public interface OperationService {
     Operation savePurchase(PurchaseDto purchaseDto) throws InvalidOperationException;
     Operation saveRedeem(RedeemDto redeemDto) throws InvalidOperationException;
+    List<UserIdPointDto> getPositiveBalancePoints();
 }

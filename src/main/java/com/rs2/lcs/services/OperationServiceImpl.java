@@ -1,5 +1,6 @@
 package com.rs2.lcs.services;
 
+import com.rs2.lcs.dto.UserIdPointDto;
 import com.rs2.lcs.dto.PurchaseDto;
 import com.rs2.lcs.dto.RedeemDto;
 import com.rs2.lcs.exceptions.InvalidOperationException;
@@ -10,6 +11,8 @@ import com.rs2.lcs.repositories.OperationRepository;
 import com.rs2.lcs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OperationServiceImpl implements OperationService {
@@ -67,6 +70,11 @@ public class OperationServiceImpl implements OperationService {
 
         operationRepository.save(operation);
         return operation;
+    }
+
+    @Override
+    public List<UserIdPointDto> getPositiveBalancePoints() {
+        return operationRepository.positiveBalancePoints();
     }
 
     private boolean isPossibleToRedeemPoints(Long userId) {
