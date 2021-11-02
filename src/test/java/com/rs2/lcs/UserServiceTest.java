@@ -19,7 +19,6 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-
     @Autowired
     @InjectMocks
     private UserServiceImpl userService;

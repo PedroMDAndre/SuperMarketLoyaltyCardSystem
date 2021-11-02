@@ -23,8 +23,10 @@ public class OperationServiceImpl implements OperationService {
 
     @Autowired
     private OperationRepository operationRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private CashierRepository cashierRepository;
 
@@ -86,11 +88,11 @@ public class OperationServiceImpl implements OperationService {
     }
 
     private boolean isValidUserId(Long id) {
-        return userRepository.countById(id) == 0;
+        return userRepository.countById(id) == 0L;
     }
 
     private boolean isValidCashierId(Long id) {
-        return cashierRepository.countById(id) == 0;
+        return cashierRepository.countById(id) == 0L;
     }
 
     private void checkValidUserAndCashier(Long userId, Long cashierId) throws InvalidOperationException {
