@@ -4,7 +4,7 @@ import com.rs2.lcs.dto.UserIdPoint;
 import com.rs2.lcs.dto.PurchaseDto;
 import com.rs2.lcs.dto.RedeemDto;
 import com.rs2.lcs.exceptions.InvalidOperationException;
-import com.rs2.lcs.model.Operation;
+import com.rs2.lcs.model.OperationTask;
 import com.rs2.lcs.model.OperationEnum;
 import com.rs2.lcs.repositories.CashierRepository;
 import com.rs2.lcs.repositories.OperationRepository;
@@ -31,26 +31,26 @@ public class OperationServiceImpl implements OperationService {
     private CashierRepository cashierRepository;
 
     @Override
-    public Operation savePurchase(PurchaseDto purchaseDto) throws InvalidOperationException {
+    public OperationTask savePurchase(PurchaseDto purchaseDto) throws InvalidOperationException {
         Long userId = purchaseDto.getUserId();
         Long cashierId = purchaseDto.getCashierId();
 
         checkValidUserAndCashier(userId, cashierId);
 
-        Operation operation = new Operation(userId, cashierId, OperationEnum.PURCHASE.getDescription());
+        OperationTask operationTask = new OperationTask(userId, cashierId, OperationEnum.PURCHASE.getDescription());
 
         double cashSpent = purchaseDto.getCashSpent();
         int purchasePoints = purchasePoints(cashSpent);
 
-        operation.setCashSpent(cashSpent);
-        operation.setPointBalance(purchasePoints);
+        operationTask.setCashSpent(cashSpent);
+        operationTask.setPointBalance(purchasePoints);
 
-        operationRepository.save(operation);
-        return operation;
+        operationRepository.save(operationTask);
+        return operationTask;
     }
 
     @Override
-    public Operation saveRedeem(RedeemDto redeemDto) throws InvalidOperationException {
+    public OperationTask saveRedeem(RedeemDto redeemDto) throws InvalidOperationException {
         Long userId = redeemDto.getUserId();
         Long cashierId = redeemDto.getCashierId();
 
@@ -60,18 +60,18 @@ public class OperationServiceImpl implements OperationService {
             throw new InvalidOperationException("Not enough points.");
         }
 
-        Operation operation = new Operation(userId, cashierId, OperationEnum.REDEEM.getDescription());
+        OperationTask operationTask = new OperationTask(userId, cashierId, OperationEnum.REDEEM.getDescription());
 
         boolean deliveredWaterPacket = redeemDto.isDeliveredWaterPacket();
 
-        operation.setPointBalance(DISCOUNT_PER_POINTS);
-        operation.setDeliveredWaterPacket(deliveredWaterPacket);
+        operationTask.setPointBalance(DISCOUNT_PER_POINTS);
+        operationTask.setDeliveredWaterPacket(deliveredWaterPacket);
         if (!deliveredWaterPacket) {
-            operation.setCashDiscount(DISCOUNT_CASH);
+            operationTask.setCashDiscount(DISCOUNT_CASH);
         }
 
-        operationRepository.save(operation);
-        return operation;
+        operationRepository.save(operationTask);
+        return operationTask;
     }
 
     @Override

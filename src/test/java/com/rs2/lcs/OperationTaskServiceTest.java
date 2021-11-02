@@ -5,7 +5,7 @@ import com.rs2.lcs.dto.RedeemDto;
 import com.rs2.lcs.dto.UserIdPoint;
 import com.rs2.lcs.dto.UserIdPointDto;
 import com.rs2.lcs.exceptions.InvalidOperationException;
-import com.rs2.lcs.model.Operation;
+import com.rs2.lcs.model.OperationTask;
 import com.rs2.lcs.model.OperationEnum;
 import com.rs2.lcs.repositories.CashierRepository;
 import com.rs2.lcs.repositories.OperationRepository;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-class OperationServiceTest {
+class OperationTaskServiceTest {
     @Autowired
     @InjectMocks
     private OperationServiceImpl operationService;
@@ -46,26 +46,26 @@ class OperationServiceTest {
         double cashSpent = 50.0;
         int points = 10;
 
-        Operation operation = new Operation(userId, cashierId, OperationEnum.PURCHASE.getDescription());
-        operation.setCashSpent(cashSpent);
-        operation.setPointBalance(points);
+        OperationTask operationTask = new OperationTask(userId, cashierId, OperationEnum.PURCHASE.getDescription());
+        operationTask.setCashSpent(cashSpent);
+        operationTask.setPointBalance(points);
 
         PurchaseDto purchaseDto = new PurchaseDto(userId, cashierId, cashSpent);
         Mockito.when(userRepository.countById(userId)).thenReturn(1L);
         Mockito.when(cashierRepository.countById(cashierId)).thenReturn(1L);
-        Mockito.when(operationRepository.save(Mockito.any(Operation.class))).thenReturn(operation);
+        Mockito.when(operationRepository.save(Mockito.any(OperationTask.class))).thenReturn(operationTask);
 
 
         // Act
-        Operation savedOperation = operationService.savePurchase(purchaseDto);
+        OperationTask savedOperationTask = operationService.savePurchase(purchaseDto);
 
         // Assert
-        Assertions.assertEquals(operation.getId(), savedOperation.getId());
-        Assertions.assertEquals(operation.getUserId(), savedOperation.getUserId());
-        Assertions.assertEquals(operation.getCashierId(), savedOperation.getCashierId());
-        Assertions.assertEquals(operation.getOperationType(), savedOperation.getOperationType());
-        Assertions.assertEquals(operation.getCashSpent(), savedOperation.getCashSpent());
-        Assertions.assertEquals(operation.getPointBalance(), savedOperation.getPointBalance());
+        Assertions.assertEquals(operationTask.getId(), savedOperationTask.getId());
+        Assertions.assertEquals(operationTask.getUserId(), savedOperationTask.getUserId());
+        Assertions.assertEquals(operationTask.getCashierId(), savedOperationTask.getCashierId());
+        Assertions.assertEquals(operationTask.getOperationType(), savedOperationTask.getOperationType());
+        Assertions.assertEquals(operationTask.getCashSpent(), savedOperationTask.getCashSpent());
+        Assertions.assertEquals(operationTask.getPointBalance(), savedOperationTask.getPointBalance());
     }
 
     @Test
@@ -76,27 +76,27 @@ class OperationServiceTest {
         double cashDiscount = 1.0;
         int points = -100;
 
-        Operation operation = new Operation(userId, cashierId, OperationEnum.REDEEM.getDescription());
-        operation.setCashDiscount(cashDiscount);
-        operation.setPointBalance(points);
+        OperationTask operationTask = new OperationTask(userId, cashierId, OperationEnum.REDEEM.getDescription());
+        operationTask.setCashDiscount(cashDiscount);
+        operationTask.setPointBalance(points);
 
         RedeemDto redeemDto = new RedeemDto(userId, cashierId, false);
         Mockito.when(userRepository.countById(userId)).thenReturn(1L);
         Mockito.when(cashierRepository.countById(cashierId)).thenReturn(1L);
         Mockito.when(operationRepository.sumPointsById(userId)).thenReturn(100L);
-        Mockito.when(operationRepository.save(Mockito.any(Operation.class))).thenReturn(operation);
+        Mockito.when(operationRepository.save(Mockito.any(OperationTask.class))).thenReturn(operationTask);
 
 
         // Act
-        Operation savedOperation = operationService.saveRedeem(redeemDto);
+        OperationTask savedOperationTask = operationService.saveRedeem(redeemDto);
 
         // Assert
-        Assertions.assertEquals(operation.getId(), savedOperation.getId());
-        Assertions.assertEquals(operation.getUserId(), savedOperation.getUserId());
-        Assertions.assertEquals(operation.getCashierId(), savedOperation.getCashierId());
-        Assertions.assertEquals(operation.getOperationType(), savedOperation.getOperationType());
-        Assertions.assertEquals(operation.getCashDiscount(), savedOperation.getCashDiscount());
-        Assertions.assertEquals(operation.getPointBalance(), savedOperation.getPointBalance());
+        Assertions.assertEquals(operationTask.getId(), savedOperationTask.getId());
+        Assertions.assertEquals(operationTask.getUserId(), savedOperationTask.getUserId());
+        Assertions.assertEquals(operationTask.getCashierId(), savedOperationTask.getCashierId());
+        Assertions.assertEquals(operationTask.getOperationType(), savedOperationTask.getOperationType());
+        Assertions.assertEquals(operationTask.getCashDiscount(), savedOperationTask.getCashDiscount());
+        Assertions.assertEquals(operationTask.getPointBalance(), savedOperationTask.getPointBalance());
     }
 
     @Test

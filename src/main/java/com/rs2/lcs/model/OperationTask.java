@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
-public class Operation {
+public class OperationTask {
     // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Operation {
     private boolean deliveredWaterPacket;
 
     // Constructor
-    public Operation(Long userId, Long cashierId, String operationType) {
+    public OperationTask(Long userId, Long cashierId, String operationType) {
         this.userId = userId;
         this.cashierId = cashierId;
         this.dateTime = LocalDateTime.now();
