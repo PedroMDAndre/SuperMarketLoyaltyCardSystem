@@ -2,8 +2,8 @@ package com.rs2.lcs.dto;
 
 public class BalancePointsDto {
     // Attributes
-    Long userId;
-    int pointBalance;
+    private Long userId;
+    private int pointBalance;
 
     // Methods
     public Long getUserId() {
