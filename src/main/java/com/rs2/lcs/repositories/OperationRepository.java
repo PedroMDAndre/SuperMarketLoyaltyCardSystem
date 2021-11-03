@@ -4,9 +4,11 @@ import com.rs2.lcs.dto.UserIdPoint;
 import com.rs2.lcs.model.OperationTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface OperationRepository extends JpaRepository<OperationTask, Long> {
     @Query(value = "SELECT SUM(point_balance) FROM operation_task WHERE user_id = ?1",
             nativeQuery = true)

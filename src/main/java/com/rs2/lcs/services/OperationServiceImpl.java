@@ -88,18 +88,18 @@ public class OperationServiceImpl implements OperationService {
     }
 
     private boolean isValidUserId(Long id) {
-        return userRepository.countById(id) == 0L;
+        return userRepository.countById(id) == 1L;
     }
 
     private boolean isValidCashierId(Long id) {
-        return cashierRepository.countById(id) == 0L;
+        return cashierRepository.countById(id) == 1L;
     }
 
     private void checkValidUserAndCashier(Long userId, Long cashierId) throws InvalidOperationException {
-        if (isValidUserId(userId)) {
+        if (!isValidUserId(userId)) {
             throw new InvalidOperationException("User id doesn't exists in the database.");
         }
-        if (isValidCashierId(cashierId)) {
+        if (!isValidCashierId(cashierId)) {
             throw new InvalidOperationException("Cashier id doesn't exists in the database.");
         }
     }
